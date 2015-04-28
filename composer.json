@@ -1,0 +1,23 @@
+{
+    "name": "goksagun/mvc",
+    "description": "Simple MVC Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Burak Bolat",
+            "email": "burakbolat@outlook.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "monolog/monolog": "~1.13@dev",
+        "vlucas/phpdotenv": "~1.1@dev"
+    },
+    "autoload": {
+        "classmap": [
+            "system/",
+            "app/controllers/",
+            "app/models/"
+        ]
+    }
+}

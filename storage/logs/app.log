@@ -1,0 +1,4 @@
+[2015-04-22 20:39:58] burak.WARNING: Foo [] []
+[2015-04-22 20:39:58] burak.ERROR: Bar [] []
+[2015-04-22 20:44:41] burak.WARNING: Foo [] []
+[2015-04-22 20:44:41] burak.ERROR: Bar [] []
