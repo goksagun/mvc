@@ -1,5 +1,8 @@
 <?php
 
+// error_reporting(-1);
+session_start();
+
 /**
  * Load autoload file
  */
@@ -10,4 +13,7 @@ require '../vendor/autoload.php';
  */
 require '../app/helpers.php';
 
-// var_dump(getcwd()); die();
+/**
+ * Load env varriables
+ */
+Dotenv::load(base_path());

@@ -2,6 +2,9 @@
 
 /**
 * Model
+*
+* @author  Burak Bolat
+* @copyright burakbolat.com
 */
 class Model
 {

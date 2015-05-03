@@ -5,6 +5,8 @@ use \PDO;
 /**
 * Database
 *
+* @author  Burak Bolat
+* @copyright burakbolat.com
 */
 class Database
 {
@@ -24,6 +26,7 @@ class Database
 
     public function __construct()
     {
+        // parent::__construct;
         // Set Config
         $this->driver   = $driver = config_get('database.default');
 
@@ -57,11 +60,14 @@ class Database
         // Create a new PDO instanace
         try {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
+            // $this->dbh = new Connection($dsn, $this->user, $this->pass, $options);
         }
         // Catch any errors
         catch(PDOException $e) {
             $this->error = $e->getMessage();
         }
+
+        // dd($this->dbh);
     }
 
     public function query($query)

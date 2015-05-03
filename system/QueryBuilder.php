@@ -2,6 +2,9 @@
 
 /**
 * QueryBuilder
+*
+* @author  Burak Bolat
+* @copyright burakbolat.com
 */
 class QueryBuilder extends Database
 {

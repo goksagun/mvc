@@ -2,22 +2,25 @@
 
 /**
 * Config
+*
+* @author  Burak Bolat
+* @copyright burakbolat.com
 */
-class Config
+class Config extends \Facade
 {
     private $path;
 
     private $config = array();
 
-    public function __construct()
+    public function __construct($config = '')
     {
-        $this->setPath();
-
         $this->load();
     }
 
     public function load($path='')
     {
+        $this->setPath();
+
         $path = ($path) ? $path : $this->getpath();
 
         foreach (glob("$path/*") as $filename) {
@@ -46,10 +49,5 @@ class Config
     public function getpath()
     {
         return $this->path;
-    }
-
-    public static function __callStatic($function, $arguments)
-    {
-        call_user_func_array($function, $arguments);
     }
 }

@@ -10,27 +10,32 @@ class HomeController extends Controller
 
     public function index()
     {
-        $users = QB::table('users')
-                        ->orderBy('id', 'DESC')
-                        ->take(3)
-                        ->skip(1)
-                        ->get(['email', 'id']);
+        $users = QB::table('users')->get();
 
-        $otherUsers = QB::table('users')
-                        ->select('id', 'email')
-                        ->where('id', '=', 2)
-                        ->orWhere('email', '=', 'burak@burakbolat.com')
-                        ->orderBy('id', 'DESC')
-                        // ->toSql();
-                        ->get();
 
-        $singleUser = QB::table('users')->find(3);
+        return view('home', compact('users'));
+
+        // $users = QB::table('users')
+        //                 ->orderBy('id', 'DESC')
+        //                 ->take(3)
+        //                 ->skip(1)
+        //                 ->get(['email', 'id']);
+
+        // $otherUsers = QB::table('users')
+        //                 ->select('id', 'email')
+        //                 ->where('id', '=', 2)
+        //                 ->orWhere('email', '=', 'burak@burakbolat.com')
+        //                 ->orderBy('id', 'DESC')
+        //                 // ->toSql();
+        //                 ->get();
+
+        // $singleUser = QB::table('users')->find(3);
 
         // dd($users, $otherUsers, $singleUser);
 
         // $mutiData = [
         //     [
-        //         'email' => 'example@burakbolat.com',
+        //         'email' => 'burak@burakbolat.com',
         //         'password' => bcrypt('password'),
         //         'created_at' => now(),
         //         'updated_at' => now(),
@@ -44,7 +49,7 @@ class HomeController extends Controller
         // ];
 
         // $data = [
-        //     'email' => 'example@burakbolat.com',
+        //     'email' => 'mesut@burakbolat.com',
         //     'password' => bcrypt('password'),
         //     'created_at' => now(),
         //     'updated_at' => now(),
@@ -52,6 +57,7 @@ class HomeController extends Controller
 
 
         // $inserted = QB::table('users')->insert($mutiData);
+        // $inserted = QB::table('users')->insert($data);
 
         // dd($inserted);
 

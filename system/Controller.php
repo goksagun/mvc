@@ -2,8 +2,11 @@
 
 /**
 * Controller
+*
+* @author  Burak Bolat
+* @copyright burakbolat.com
 */
-class Controller
+class Controller extends \Facade
 {
 
     function __construct()

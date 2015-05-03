@@ -49,17 +49,25 @@ class Router
 
         $controller = strlen($paths[1]) ? $paths[1] : 'home';
 
-        $this->setController($controller);
-
         $action = (isset($paths[2]) && $paths[2] != '') ? $paths[2] : 'index';
+
+        if (isset($paths[3])) {
+            $params = array_slice($paths, 3);
+        } else {
+            $params = array();
+        }
+
+        // dd($params);
+
+        $this->setController($controller);
 
         $this->setAction($action);
 
-        if (isset($paths[3])) {
-            $this->setParams(array_slice($paths, 3));
-        } else {
-            $this->setParams(array());
-        }
+        $this->setParams($params);
+
+        $this->checkFlash();
+
+        // dd($this);
     }
 
     /**
@@ -72,12 +80,14 @@ class Router
         // dd($this);
         $controllerFile = app_path().'/controllers/'.ucfirst($this->getController()).'.php';
 
-        // return $controllerFile;
-
         if (file_exists($controllerFile)) {
 
-            if (method_exists(__NAMESPACE__ .'\\'.$this->getController(), $this->getAction())) {
-                return call_user_func_array(array(__NAMESPACE__ .'\\'.$this->getController(), $this->getAction()), $this->getParams());
+            $handler = array(__NAMESPACE__ .'\\'.$this->getController(), $this->getAction());
+            $params = $this->getParams();
+
+            if (is_callable($handler)) {
+                return call_user_func_array($handler , $params);
+                // return call_user_method_array($this->getAction(), __NAMESPACE__ .'\\'.$this->getController(), $this->getParams());
             } else {
                 throw new \Exception("Page not found");
             }
@@ -97,6 +107,19 @@ class Router
     public function dispatch()
     {
         return $this->set();
+    }
+
+    public function checkFlash()
+    {
+        if (Session::has('flash_expires')) {
+            Flash::destroy();
+        }
+
+        if (Session::has('flash')) {
+            $expires = Session::put('flash_expires', true);
+        } else {
+            Session::forget('flash_expires');
+        }
     }
 
     /**

@@ -1,8 +1,11 @@
 <?php namespace App;
 
 /**
- * QB
- */
+* QB
+*
+* @author  Burak Bolat
+* @copyright burakbolat.com
+*/
 class QB extends Database
 {
     protected $query = '';
@@ -243,7 +246,7 @@ class QB extends Database
 
         $this->execute($this->params);
 
-        return (is_multi_array($data)) ? $this->rowCount() : $this->lastInsertId();
+        return (is_multi_array($data)) ? $this->rowCount() : intval($this->lastInsertId());
     }
 
     public function update(array $data = array(), $id = 0, $key = 'id', $operator = '=')

@@ -19,17 +19,26 @@ function public_path($path = '')
 
 function base_path($path = '')
 {
+    $path = $path ? starts_with($path, '/') ? $path : '/'.$path : $path;
     return str_replace('/public', '', public_path()).$path;
 }
 
 function app_path($path = '')
 {
+    $path = $path ? starts_with($path, '/') ? $path : '/'.$path : $path;
     return base_path().'/app'.$path;
+}
+
+function views_path($path = '')
+{
+    $path = $path ? starts_with($path, '/') ? $path : '/'.$path : $path;
+    return app_path().'/views'.$path;
 }
 
 
 function storage_path($path = '')
 {
+    $path = $path ? starts_with($path, '/') ? $path : '/'.$path : $path;
     return base_path().'/storage'.$path;
 }
 
@@ -64,14 +73,12 @@ function bcrypt($password)
         'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
     ];
 
-    return password_hash($password, PASSWORD_BCRYPT, $options);
+    return password_hash($password, config_get('app.cipher'), $options);
 }
 
-function env($value='', $default='')
+function env($value = '', $default = false)
 {
-    $value = ($value) ? $value : $default;
-
-    return getenv($value);
+    return getenv($value) ? getenv($value) : $default;
 }
 
 function array_set(&$array, $key, $value)
@@ -145,6 +152,16 @@ function config_set($key, $value)
     // return App\Config::set($key, $value);
 }
 
+function view($view = '', $data = array())
+{
+    return App\View::render($view, $data);
+}
+
+function redirect($uri='', $code=302)
+{
+    return App\Response::redirect($uri, $code);
+}
+
 // returns true if $needle is a substring of $haystack
 function contains($needle, $haystack, $insensetive = true)
 {
@@ -161,6 +178,17 @@ function is_multi_array($array)
         if (is_array($item)) return true;
     }
     return false;
+}
+
+function starts_with($str, $needle)
+{
+   return substr($str, 0, strlen($needle)) === $needle;
+}
+
+function ends_with($str, $needle)
+{
+   $length = strlen($needle);
+   return ! $length || substr($str, - $length) === $needle;
 }
 
 function parse_classname($name, $full = false)
