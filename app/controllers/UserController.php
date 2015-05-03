@@ -1,9 +1,5 @@
 <?php namespace App;
 
-use App\Controller;
-use App\Request;
-use App\Flash;
-
 /**
 * UserController
 */
@@ -12,6 +8,9 @@ class UserController extends Controller
 
     public function index()
     {
+        // Session::destroy();
+        // dd(Session::all());
+
         $users = QB::table('users')->get();
 
         return view('users/index', compact('users'));
@@ -28,7 +27,7 @@ class UserController extends Controller
 
             $data = Request::all();
 
-            Session::put('old', $data);
+            Flash::put('old', $data);
 
             $rules = [
                 'email' => 'required|email',
@@ -61,9 +60,9 @@ class UserController extends Controller
 
             QB::table('users')->insert($data);
 
-            Message::set('success', "User created was successfully.");
+            Message::set('success', "User created successfully.");
 
-            return redirect('/user/create');
+            return redirect('/user');
         }
     }
 
@@ -112,9 +111,18 @@ class UserController extends Controller
 
             QB::table('users')->update($data, $id);
 
-            Message::set('success', "User updated was successfully.");
+            Message::set('success', "User updated successfully.");
 
             return redirect('/user');
         }
+    }
+
+    public function delete($id)
+    {
+        QB::table('users')->delete($id);
+
+        Message::set('info', "User deleted.");
+
+        return redirect('/user');
     }
 }

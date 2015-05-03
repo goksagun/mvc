@@ -44,7 +44,7 @@ class Request extends \Facade
 
 	public function old($key='')
 	{
-		return isset($key) ? Session::get('old.' . $key) : Session::get('old');
+		return isset($key) ? Flash::get('old.' . $key) : Flash::get('old');
 	}
 
 	function __destruct()

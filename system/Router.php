@@ -112,10 +112,10 @@ class Router
     public function checkFlash()
     {
         if (Session::has('flash_expires')) {
-            Flash::destroy();
+            Session::put('flash', []);
         }
 
-        if (Session::has('flash')) {
+        if (Session::get('flash')) {
             $expires = Session::put('flash_expires', true);
         } else {
             Session::forget('flash_expires');
