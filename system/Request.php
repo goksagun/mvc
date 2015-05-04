@@ -8,13 +8,31 @@
 */
 class Request extends \Facade
 {
-	private $method;
-	
-	private $post;
-	private $get;
-	private $request;
+    /**
+     * @var
+     */
+    private $method;
 
-	function __construct($method, $post, $get, $request)
+    /**
+     * @var
+     */
+    private $post;
+    /**
+     * @var
+     */
+    private $get;
+    /**
+     * @var
+     */
+    private $request;
+
+    /**
+     * @param $method
+     * @param $post
+     * @param $get
+     * @param $request
+     */
+    function __construct($method, $post, $get, $request)
 	{
 		$this->method = $_SERVER['REQUEST_METHOD'];
 		$this->post = $_POST;
@@ -22,32 +40,54 @@ class Request extends \Facade
 		$this->request = $_REQUEST;
 	}
 
-	public function method()
+    /**
+     * @return mixed
+     */
+    public function method()
 	{
 		return $_SERVER['REQUEST_METHOD'];
 	}
 
-	public function post($key='')
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function post($key='')
 	{
 		return isset($_POST[$key]) ? $_POST[$key] : $_POST;
 	}
 
-	public function get($key='')
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function get($key='')
 	{
 		return isset($_GET[$key]) ? $_GET[$key] : $_GET;
 	}
 
-	public function all($key='')
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function all($key='')
 	{
 		return isset($_REQUEST[$key]) ? $_REQUEST[$key] : $_REQUEST;
 	}
 
-	public function old($key='')
+    /**
+     * @param string $key
+     * @return null
+     */
+    public function old($key='')
 	{
 		return isset($key) ? Flash::get('old.' . $key) : Flash::get('old');
 	}
 
-	function __destruct()
+    /**
+     *
+     */
+    function __destruct()
 	{
 		$_POST = array();
 		$_GET = array();

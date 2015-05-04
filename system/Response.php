@@ -32,9 +32,4 @@ class Response extends \Facade
 	    header("Location : $uri", TRUE, $code);
 	    exit();
 	}
-
-	function __destruct()
-	{
-		
-	}
 }

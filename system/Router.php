@@ -109,6 +109,9 @@ class Router
         return $this->set();
     }
 
+    /**
+     *
+     */
     public function checkFlash()
     {
         if (Session::has('flash_expires')) {

@@ -6,13 +6,24 @@
 * @author  Burak Bolat
 * @copyright burakbolat.com
 */
-class View
+class View extends \Facade
 {
 
-	private $view;
+    /**
+     * @var
+     */
+    private $view;
 
-	protected $data = array();
+    /**
+     * @var array
+     */
+    protected $data = array();
 
+    /**
+     * @param $view
+     * @param $data
+     * @throws \Exception
+     */
     function __construct($view, $data)
     {
         $this->setViewFile($view);
@@ -21,11 +32,19 @@ class View
         $this->setView();
     }
 
+    /**
+     * @param string $view
+     * @param array $data
+     * @return View
+     */
     public static function render($view = '', $data = array())
     {
     	return new View($view, $data);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function setView()
     {
     	extract($this->data);
@@ -45,18 +64,19 @@ class View
         echo $content;
     }
 
+    /**
+     * @param string $view
+     */
     public function setViewFile($view = '')
     {
     	$this->view = $view . '.php';
     }
 
+    /**
+     * @param array $data
+     */
     public function setData($data = array())
     {
     	$this->data = $data;
-    }
-
-    public static function __callStatic($function, $arguments)
-    {
-        call_user_func_array($function, $arguments);
     }
 }

@@ -45,8 +45,6 @@ class Session extends \Facade
 
 	public function forget($key='')
 	{
-		// $_SESSION = [];
-		// dd(array_set($_SESSION, $key, false));
 		unset($_SESSION[$key]);
 		return true;
 	}

@@ -8,27 +8,45 @@
 */
 class Message extends \Facade
 {
-	function __construct($method, $post, $get, $request)
+
+    function __construct()
 	{
 		//
 	}
 
-	public function has($key='')
+    /**
+     * @param string $key
+     * @return bool
+     */
+    public function has($key='')
 	{
 		return Flash::has('messages.' . $key);
 	}
 
-	public function get($key='', $default=null)
+    /**
+     * @param string $key
+     * @param null $default
+     * @return null
+     */
+    public function get($key='', $default=null)
 	{
 		return isset($key) ? Flash::get('messages.' . $key, $default) : Flash::get('messages');
 	}
 
-	public function set($key='', $value='')
+    /**
+     * @param string $key
+     * @param string $value
+     * @return mixed
+     */
+    public function set($key='', $value='')
 	{
 		return Flash::put('messages.' . $key, $value);
 	}
 
-	public function all()
+    /**
+     * @return null
+     */
+    public function all()
 	{
 		return Flash::get('messages');
 	}

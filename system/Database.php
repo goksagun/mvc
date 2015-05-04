@@ -10,23 +10,52 @@ use \PDO;
 */
 class Database
 {
+    /**
+     * @var null
+     */
     private $driver;
 
+    /**
+     * @var null
+     */
     private $host;
+    /**
+     * @var null
+     */
     private $user;
+    /**
+     * @var null
+     */
     private $pass;
+    /**
+     * @var null
+     */
     private $dbname;
 
+    /**
+     * @var
+     */
     private $dbh;
+    /**
+     * @var
+     */
     private $error;
 
+    /**
+     * @var
+     */
     private $stmt;
 
+    /**
+     * @var null
+     */
     private $fetch;
 
+    /**
+     *
+     */
     public function __construct()
     {
-        // parent::__construct;
         // Set Config
         $this->driver   = $driver = config_get('database.default');
 
@@ -40,6 +69,9 @@ class Database
         $this->connection();
     }
 
+    /**
+     *
+     */
     public function connection()
     {
         // Set DSN
@@ -66,15 +98,21 @@ class Database
         catch(PDOException $e) {
             $this->error = $e->getMessage();
         }
-
-        // dd($this->dbh);
     }
 
+    /**
+     * @param $query
+     */
     public function query($query)
     {
         $this->stmt = $this->dbh->prepare($query);
     }
 
+    /**
+     * @param $param
+     * @param $value
+     * @param null $type
+     */
     public function bind($param, $value, $type = null)
     {
         if (is_null($type)) {
@@ -92,10 +130,12 @@ class Database
                     $type = PDO::PARAM_STR;
             }
         }
-        // $this->stmt->bindParam($param, $value, $type);
         $this->stmt->bindValue($param, $value, $type);
     }
 
+    /**
+     * @param $params
+     */
     public function bindParams($params)
     {
         if (count($params)) {
@@ -106,6 +146,10 @@ class Database
         }
     }
 
+    /**
+     * @param array $params
+     * @return mixed
+     */
     public function execute($params = array())
     {
         $this->bindParams($params);
@@ -113,6 +157,10 @@ class Database
         return $this->stmt->execute();
     }
 
+    /**
+     * @param array $params
+     * @return mixed
+     */
     public function resultset(array $params = array())
     {
         $this->execute($params);
@@ -120,6 +168,10 @@ class Database
         return $this->stmt->fetchAll($this->fetch);
     }
 
+    /**
+     * @param array $params
+     * @return mixed
+     */
     public function single(array $params = array())
     {
         $this->execute($params);
@@ -127,36 +179,57 @@ class Database
         return $this->stmt->fetch($this->fetch);
     }
 
+    /**
+     * @return mixed
+     */
     public function columnCount()
     {
         return $this->stmt->columnCount();
     }
 
+    /**
+     * @return mixed
+     */
     public function rowCount()
     {
         return $this->stmt->rowCount();
     }
 
+    /**
+     * @return mixed
+     */
     public function lastInsertId()
     {
         return $this->dbh->lastInsertId();
     }
 
+    /**
+     * @return mixed
+     */
     public function beginTransaction()
     {
         return $this->dbh->beginTransaction();
     }
 
+    /**
+     * @return mixed
+     */
     public function endTransaction()
     {
         return $this->dbh->commit();
     }
 
+    /**
+     * @return mixed
+     */
     public function cancelTransaction()
     {
         return $this->dbh->rollBack();
     }
 
+    /**
+     * @return mixed
+     */
     public function debugDumpParams()
     {
         return $this->stmt->debugDumpParams();

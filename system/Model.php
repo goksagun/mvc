@@ -6,27 +6,37 @@
 * @author  Burak Bolat
 * @copyright burakbolat.com
 */
-class Model
+class Model extends QB
 {
     protected $table;
+
+    private static $qb;
 
     function __construct()
     {
         if (is_null($this->table)) {
             $this->table = underscore(pluralize(parse_classname(get_called_class())));
         }
+
+//        self::$qb = $this->table;
+        self::$qb = $this->db();
     }
 
     public function db()
     {
-        return DB::table($this->table);
+        return QB::table($this->table);
     }
 
-    // DB::table('users')->get()  =>  User::get()
-    //
-    public static function get()
+    public function get()
     {
-        return $this->db;
+//        return QB::table(self::$qb);
+//        return new QB(self::$qb);
+        return self::$qb;
+    }
+
+    public function getTable()
+    {
+        return $this->table;
     }
 
 }
