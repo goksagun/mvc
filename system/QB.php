@@ -16,7 +16,7 @@ class QB extends Database
     /**
      * @var string
      */
-    protected $table;
+    protected static $table;
 
     /**
      * @var array
@@ -55,7 +55,7 @@ class QB extends Database
     {
         parent::__construct();
 
-        $this->table = $table;
+        static::$table = $table;
     }
 
     /**
@@ -205,10 +205,13 @@ class QB extends Database
 
     /**
      * @param int $limit
+     * @return $this
      */
     public function limit($limit = 1000)
     {
-        $this->take($limit);
+        $this->limit = $limit;
+
+        return $this;
     }
 
     /**
@@ -232,11 +235,13 @@ class QB extends Database
 
     /**
      * @param int $offset
-     * @return QB
+     * @return $this
      */
     public function offset($offset = 0)
     {
-        return $this->skip($offset);
+        $this->offset = $offset;
+
+        return $this;
     }
 
     /**
@@ -281,6 +286,11 @@ class QB extends Database
         return $this->resultset($this->params);
     }
 
+    public function all($columns = array())
+    {
+        return $this->get($columns);
+    }
+
     /**
      * @param array $columns
      * @return mixed
@@ -312,7 +322,9 @@ class QB extends Database
      */
     public function insert(array $data = array())
     {
-        $this->setQuery("INSERT INTO `{$this->table}`");
+        $table = static::$table;
+
+        $this->setQuery("INSERT INTO `{$table}`");
 
         if (is_multi_array($data)) {
             $columns = implode(', ', array_map(function ($column) {
@@ -360,7 +372,7 @@ class QB extends Database
 
         $this->execute($this->params);
 
-        return (is_multi_array($data)) ? $this->rowCount() : intval($this->lastInsertId());
+        return ($this->rowCount() > 1) ? $this->rowCount() : $this->lastInsertId();
     }
 
     /**
@@ -372,7 +384,9 @@ class QB extends Database
      */
     public function update(array $data = array(), $id = 0, $key = 'id', $operator = '=')
     {
-        $this->setQuery("UPDATE `{$this->table}`");
+        $table = static::$table;
+
+        $this->setQuery("UPDATE `{$table}`");
 
         $columns = implode(', ', array_map(function ($column) {
             return "`{$column}`=:{$column}";
@@ -388,7 +402,9 @@ class QB extends Database
 
         $this->setParams($data);
 
-        return $this->execute($this->params);
+        $result = $this->execute($this->params);
+
+        return ($this->rowCount()) > 1 ? $this->rowCount() : $result;
     }
 
     /**
@@ -399,7 +415,9 @@ class QB extends Database
      */
     public function delete($id = 0, $key = 'id', $operator = '=')
     {
-        $this->setQuery("DELETE FROM `{$this->table}`");
+        $table = static::$table;
+
+        $this->setQuery("DELETE FROM `{$table}`");
 
         $this->where($key, $operator, $id);
 
@@ -407,9 +425,9 @@ class QB extends Database
 
         $this->query($this->query);
 
-        $this->execute($this->params);
+        $result = $this->execute($this->params);
 
-        return $this->rowCount();
+        return ($this->rowCount()) > 1 ? $this->rowCount() : $result;
     }
 
     /**
@@ -432,7 +450,7 @@ class QB extends Database
         }
 
         $this->setSelect($this->select);
-        $this->setFrom($this->table);
+        $this->setFrom(static::$table);
         $this->setWhere($this->wheres);
         $this->setOrderBy($this->order);
         $this->setLimit($this->limit);

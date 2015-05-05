@@ -8,10 +8,7 @@ class UserController extends Controller
 
     public function index()
     {
-        // Session::destroy();
-        // dd(Session::all());
-
-        $users = QB::table('users')->get();
+        $users = User::all();
 
         return view('users/index', compact('users'));
     }

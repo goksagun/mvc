@@ -184,7 +184,7 @@ class Database
      */
     public function columnCount()
     {
-        return $this->stmt->columnCount();
+        return (int) $this->stmt->columnCount();
     }
 
     /**
@@ -192,7 +192,7 @@ class Database
      */
     public function rowCount()
     {
-        return $this->stmt->rowCount();
+        return (int) $this->stmt->rowCount();
     }
 
     /**
@@ -200,7 +200,7 @@ class Database
      */
     public function lastInsertId()
     {
-        return $this->dbh->lastInsertId();
+        return (int) $this->dbh->lastInsertId();
     }
 
     /**
