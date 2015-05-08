@@ -64,6 +64,8 @@ class Database
         $this->user     = config_get("database.connections.$driver.username");
         $this->pass     = config_get("database.connections.$driver.password");
 
+        $this->options = array();
+
         $this->fetch    = config_get('database.fetch');
 
         $this->connection();
@@ -77,22 +79,24 @@ class Database
         // Set DSN
         $dsn = $this->driver . ':host=' . $this->host . ';dbname=' . $this->dbname;
         // Set options
-        $options = array(
+        $this->options = array(
             PDO::ATTR_PERSISTENT            => true,
-            PDO::ATTR_ERRMODE               => PDO::ERRMODE_EXCEPTION
+            PDO::ATTR_ERRMODE               => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_EMULATE_PREPARES      => false,
+            PDO::ATTR_STRINGIFY_FETCHES     => false
+
         );
 
         // Set mysql connection options
         if ($this->driver == 'mysql') {
-            $options = array_merge($options, array(
+            $options = array_merge($this->options, array(
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES ".config_get('database.connections.mysql.charset')
             ));
         }
 
         // Create a new PDO instanace
         try {
-            $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
-            // $this->dbh = new Connection($dsn, $this->user, $this->pass, $options);
+            $this->dbh = new PDO($dsn, $this->user, $this->pass, $this->options);
         }
         // Catch any errors
         catch(PDOException $e) {
