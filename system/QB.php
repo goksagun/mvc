@@ -16,7 +16,7 @@ class QB extends Database
     /**
      * @var string
      */
-    protected static $table;
+    protected $table;
 
     /**
      * @var array
@@ -50,21 +50,15 @@ class QB extends Database
 
     /**
      * @param string $table
-     */
-    function __construct($table = '')
-    {
-        parent::__construct();
-
-        static::$table = $table;
-    }
-
-    /**
-     * @param string $table
      * @return QB
      */
     public static function table($table = '')
     {
-        return new QB($table);
+        $qb = new static;
+
+        $qb->table = $table;
+
+        return $qb;
     }
 
     /**
@@ -97,7 +91,7 @@ class QB extends Database
      */
     public function from($table = '')
     {
-        return static::table($table);
+        return $this->table($table);
     }
 
     /**
@@ -322,7 +316,7 @@ class QB extends Database
      */
     public function insert(array $data = array())
     {
-        $table = static::$table;
+        $table = $this->table;
 
         $this->setQuery("INSERT INTO `{$table}`");
 
@@ -384,7 +378,7 @@ class QB extends Database
      */
     public function update(array $data = array(), $id = 0, $key = 'id', $operator = '=')
     {
-        $table = static::$table;
+        $table = $this->table;
 
         $this->setQuery("UPDATE `{$table}`");
 
@@ -415,7 +409,7 @@ class QB extends Database
      */
     public function delete($id = 0, $key = 'id', $operator = '=')
     {
-        $table = static::$table;
+        $table = $this->table;
 
         $this->setQuery("DELETE FROM `{$table}`");
 
@@ -450,7 +444,7 @@ class QB extends Database
         }
 
         $this->setSelect($this->select);
-        $this->setFrom(static::$table);
+        $this->setFrom($this->table);
         $this->setWhere($this->wheres);
         $this->setOrderBy($this->order);
         $this->setLimit($this->limit);
