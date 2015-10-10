@@ -8,7 +8,7 @@ use \PDO;
 * @author  Burak Bolat
 * @copyright burakbolat.com
 */
-class Database
+class Database extends PDO
 {
     /**
      * @var null
@@ -19,23 +19,22 @@ class Database
      * @var null
      */
     private $host;
+
     /**
      * @var null
      */
     private $user;
+
     /**
      * @var null
      */
     private $pass;
+
     /**
      * @var null
      */
     private $dbname;
 
-    /**
-     * @var
-     */
-    private $dbh;
     /**
      * @var
      */
@@ -64,17 +63,20 @@ class Database
         $this->user     = config_get("database.connections.$driver.username");
         $this->pass     = config_get("database.connections.$driver.password");
 
-        $this->options = array();
+        $this->options  = array();
 
         $this->fetch    = config_get('database.fetch');
 
-        $this->connection();
+        // Set DSN
+        $dsn = $this->setDsn();
+
+        parent::__construct($dsn, $this->user, $this->pass, $this->options);
     }
 
     /**
      *
      */
-    public function connection()
+    public function setDsn()
     {
         // Set DSN
         $dsn = $this->driver . ':host=' . $this->host . ';dbname=' . $this->dbname;
@@ -89,19 +91,12 @@ class Database
 
         // Set mysql connection options
         if ($this->driver == 'mysql') {
-            $options = array_merge($this->options, array(
+            $this->options = array_merge($this->options, array(
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES ".config_get('database.connections.mysql.charset')
             ));
         }
 
-        // Create a new PDO instanace
-        try {
-            $this->dbh = new PDO($dsn, $this->user, $this->pass, $this->options);
-        }
-        // Catch any errors
-        catch(PDOException $e) {
-            $this->error = $e->getMessage();
-        }
+        return $dsn;
     }
 
     /**
@@ -109,7 +104,7 @@ class Database
      */
     public function query($query)
     {
-        $this->stmt = $this->dbh->prepare($query);
+        $this->stmt = $this->prepare($query);
     }
 
     /**
@@ -204,7 +199,7 @@ class Database
      */
     public function lastInsertId()
     {
-        return (int) $this->dbh->lastInsertId();
+        return (int) $this->lastInsertId();
     }
 
     /**
@@ -212,7 +207,7 @@ class Database
      */
     public function beginTransaction()
     {
-        return $this->dbh->beginTransaction();
+        return $this->beginTransaction();
     }
 
     /**
@@ -220,7 +215,7 @@ class Database
      */
     public function endTransaction()
     {
-        return $this->dbh->commit();
+        return $this->commit();
     }
 
     /**
@@ -228,7 +223,7 @@ class Database
      */
     public function cancelTransaction()
     {
-        return $this->dbh->rollBack();
+        return $this->rollBack();
     }
 
     /**

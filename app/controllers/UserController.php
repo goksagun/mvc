@@ -8,7 +8,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all();
+        $users = User::take(10)->orderBy('id', 'desc')->get();
 
         return view('users/index', compact('users'));
     }
@@ -64,7 +64,7 @@ class UserController extends Controller
     }
 
     public function edit($id)
-    {      
+    {
         $user = QB::table('users')->find($id);
 
         return view('users/edit', compact('user'));

@@ -11,15 +11,15 @@ class Model extends QB
     /**
      * @var
      */
-    protected static $table;
+    protected $table;
 
     /**
      *
      */
     function __construct()
     {
-        if (is_null(static::$table)) {
-            static::$table = underscore(pluralize(parse_classname(get_called_class())));
+        if (is_null($this->table)) {
+            $this->table = underscore(pluralize(parse_classname(get_called_class())));
         }
     }
 
@@ -29,7 +29,8 @@ class Model extends QB
      */
     public function get($columns = array())
     {
-        return QB::table(static::$table)->get($columns);
+        $model = new static;
+        return QB::table($model->table)->get($columns);
     }
 
     /**
@@ -38,7 +39,8 @@ class Model extends QB
      */
     public function all($columns = array())
     {
-        return QB::table(static::$table)->all($columns);
+        $model = new static;
+        return QB::table($model->table)->all($columns);
     }
 
     /**
@@ -47,7 +49,8 @@ class Model extends QB
      */
     public function first($columns = array())
     {
-        return QB::table(static::$table)->first($columns);
+        $model = new static;
+        return QB::table($model->table)->first($columns);
     }
 
     /**
@@ -57,7 +60,8 @@ class Model extends QB
      */
     public function find($id = 0, $key = 'id')
     {
-        return QB::table(static::$table)->find($id, $key);
+        $model = new static;
+        return QB::table($model->table)->find($id, $key);
     }
 
     /**
@@ -66,7 +70,8 @@ class Model extends QB
      */
     public function select($columns = array('*'))
     {
-        return QB::table(static::$table)->select($columns);
+        $model = new static;
+        return QB::table($model->table)->select($columns);
     }
 
     /**
@@ -78,7 +83,8 @@ class Model extends QB
      */
     public function where($column = '', $operator = '=', $value = '', $comperator = null)
     {
-        return QB::table(static::$table)->where($column, $operator, $value, $comperator);
+        $model = new static;
+        return QB::table($model->table)->where($column, $operator, $value, $comperator);
     }
 
     /**
@@ -89,7 +95,8 @@ class Model extends QB
      */
     public function orWhere($key, $operator = '=', $value)
     {
-        return QB::table(static::$table)->orWhere($key, $operator, $value);
+        $model = new static;
+        return QB::table($model->table)->orWhere($key, $operator, $value);
     }
 
     /**
@@ -99,7 +106,8 @@ class Model extends QB
      */
     public function orderBy($key = '', $order = 'ASC')
     {
-        return QB::table(static::$table)->orderBy($key, $order);
+        $model = new static;
+        return QB::table($model->table)->orderBy($key, $order);
     }
 
     /**
@@ -108,7 +116,8 @@ class Model extends QB
      */
     public function take($limit = 1000)
     {
-        return QB::table(static::$table)->take($limit);
+        $model = new static;
+        return QB::table($model->table)->take($limit);
     }
 
     /**
@@ -117,7 +126,8 @@ class Model extends QB
      */
     public function limit($limit = 1000)
     {
-        return QB::table(static::$table)->take($limit);
+        $model = new static;
+        return QB::table($model->table)->take($limit);
     }
 
     /**
@@ -126,7 +136,8 @@ class Model extends QB
      */
     public function skip($offset = 0)
     {
-        return QB::table(static::$table)->skip($offset);
+        $model = new static;
+        return QB::table($model->table)->skip($offset);
     }
 
     /**
@@ -135,7 +146,8 @@ class Model extends QB
      */
     public function offset($offset = 0)
     {
-        return QB::table(static::$table)->offset($offset);
+        $model = new static;
+        return QB::table($model->table)->offset($offset);
     }
 
     /**
@@ -144,7 +156,8 @@ class Model extends QB
      */
     public function insert(array $data = array())
     {
-        return QB::table(static::$table)->insert($data);
+        $model = new static;
+        return QB::table($model->table)->insert($data);
     }
 
     /**
@@ -153,7 +166,8 @@ class Model extends QB
      */
     public function create(array $data = array())
     {
-        return QB::table(static::$table)->insert($data);
+        $model = new static;
+        return QB::table($model->table)->insert($data);
     }
 
     /**
@@ -165,7 +179,8 @@ class Model extends QB
      */
     public function update(array $data = array(), $id = 0, $key = 'id', $operator = '=')
     {
-        return QB::table(static::$table)->update($data, $id, $key, $operator);
+        $model = new static;
+        return QB::table($model->table)->update($data, $id, $key, $operator);
     }
 
     /**
@@ -176,7 +191,8 @@ class Model extends QB
      */
     public function delete($id = 0, $key = 'id', $operator = '=')
     {
-        return QB::table(static::$table)->delete($id, $key, $operator);
+        $model = new static;
+        return QB::table($model->table)->delete($id, $key, $operator);
     }
 
 }
